@@ -51,7 +51,7 @@ def urls_of_day(day: date, output_dir: Path, delta=timedelta(seconds=5)):
         url = current_time.strftime(
             "https://samples.adsbexchange.com/readsb-hist/%Y/%m/%d/%H%M%SZ.json.gz"
         )
-        output_path = output_dir / current_time.strftime("%Y%m%d%H%M%SZ.json.gz")
+        output_path = output_dir / current_time.strftime("%Y%m%d%H%M%SZ.json")
         yield url, output_path
         current_time += delta
 
