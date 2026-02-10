@@ -25,7 +25,7 @@ find tmp/data/raw/download/ -name '*.json.gz' | xargs -P 100 gzip -vkd
 
 ## Data Ingestion with PySpark
 
-Open `ingest.py` and implement the functions marked with `START STUDENT CODE` / `END STUDENT CODE`.
+Open `__main__.py` and implement the functions marked with `START STUDENT CODE` / `END STUDENT CODE`.
 
 ### Exercise 1: Create a Spark Session
 
