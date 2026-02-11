@@ -12,7 +12,8 @@ def get_spark() -> SparkSession:
     - Return a Spark session
     """
     # START STUDENT CODE
-    # END STUDENT CODE
+    return SparkSession.builder.getOrCreate()
+# END STUDENT CODE
 
 
 spark = get_spark()
@@ -27,6 +28,13 @@ def first_read(data_file_paths: list[str], schema_path: str) -> DataFrame:
     - Save schema to tmp/data/schema.json
     """
     # START STUDENT CODE
+    df = spark.read.json(data_file_paths, multiLine=True)
+    df.printSchema()
+
+    with open(schema_path, "w") as f:
+        f.write(df.schema.json())
+
+    return df
     # END STUDENT CODE
 
 
@@ -55,6 +63,12 @@ def next_read(data_file_paths: list[str], schema_path: str) -> DataFrame:
     - Return dataframe
     """
     # START STUDENT CODE
+    with open(schema_path, "r") as f:
+        schema_json = f.read()
+    schema = StructType.fromJson(json.loads(schema_json))
+
+    df = spark.read.schema(schema).json(data_file_paths, multiLine=True)
+    return df
     # END STUDENT CODE
 
 
@@ -70,6 +84,9 @@ def explode_rows(df: DataFrame) -> DataFrame:
     - Explode aircraft column into multiple rows
     """
     # START STUDENT CODE
+    from pyspark.sql.functions import explode
+
+    return df.select(explode("aircraft").alias("aircraft"))
     # END STUDENT CODE
 
 
@@ -87,6 +104,7 @@ def write_to_parquet(df: DataFrame, output_path: str):
     - Write (mode "overwrite") dataframe to parquet file
     """
     # START STUDENT CODE
+    df.write.mode("overwrite").parquet(output_path)
     # END STUDENT CODE
 
 
@@ -104,6 +122,7 @@ def read_parquet(input_path: str) -> DataFrame:
     - Read parquet file
     """
     # START STUDENT CODE
+    return spark.read.parquet(input_path)
     # END STUDENT CODE
 
 
